@@ -6,7 +6,7 @@ class BasicDiskController(object):
     def __init__(self, disk):
         self.disk = disk
         self.operation_req_queue = []
-        self.timestamp = 0.
+        self.timestamp = 0
 
     def receive_new_request(self, request):
         self.operation_req_queue.append(request)

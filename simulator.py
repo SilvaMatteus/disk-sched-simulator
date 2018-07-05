@@ -1,10 +1,11 @@
 ''' Disk scheduling simulator.
 '''
 
-from conf import READING_OPERATION, WRITING_OPERATION, MINIMAL_TIME_UNIT
+from conf import READING_OPERATION, WRITING_OPERATION, MINIMAL_TIME_UNIT, MAX_TIME_STEP
 from disk_controller import *
 from disk import Disk
 from disk_request import Request
+from random import randint
 
 class Engine(object):
     def __init__(self, request_list):
@@ -17,8 +18,7 @@ class Engine(object):
         controller = BasicDiskController(hard_disk)
         # timeline
         timestamp = self.__request_list[0].timestamp
-        while timestamp <= self.__request_list[-1]:
-            print timestamp
+        while self.__request_list:
             if self.__request_list[0].timestamp == timestamp:
                 print self.__request_list[0]
                 controller.receive_new_request(self.__request_list.pop(0))
@@ -31,7 +31,10 @@ def convert_line(item):
     elif item == 'W':
         return WRITING_OPERATION
     else:
-        return float(item)
+        if '.' in item:
+            return int(item.replace('.', '')[:-3])
+        else:
+            return int(item)
 
 def load_requests_from_file():
     requests = []
